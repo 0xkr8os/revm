@@ -1,7 +1,8 @@
 use crate::primitives::{AccountInfo, Address, Bytecode, B256, KECCAK_EMPTY, U256};
 use crate::{Database, DatabaseRef};
-use ethers_core::types::{BlockId, H160 as eH160, H256, U64 as eU64};
+use ethers_core::types::{BlockId, H160 as eH160, H256, U64 as eU64, Bytes};
 use ethers_providers::Middleware;
+use core::str::FromStr;
 use std::sync::Arc;
 use tokio::runtime::{Handle, Runtime};
 
@@ -61,18 +62,17 @@ impl<M: Middleware> DatabaseRef for EthersDB<M> {
         };
         let (nonce, balance, code) = self.block_on(f);
         // panic on not getting data?
-        let bytecode = code.unwrap_or_else(|e| panic!("ethers get code error: {e:?}"));
+
+        if nonce.is_err() || balance.is_err() {
+            return Ok(None);
+        }
+
+        let bytecode = code.unwrap_or(Bytes::from_str("").unwrap());
         let bytecode = Bytecode::new_raw(bytecode.0.into());
         let code_hash = bytecode.hash_slow();
         Ok(Some(AccountInfo::new(
-            U256::from_limbs(
-                balance
-                    .unwrap_or_else(|e| panic!("ethers get balance error: {e:?}"))
-                    .0,
-            ),
-            nonce
-                .unwrap_or_else(|e| panic!("ethers get nonce error: {e:?}"))
-                .as_u64(),
+            U256::from_limbs(balance.unwrap().0),
+            nonce.unwrap().as_u64(),
             code_hash,
             bytecode,
         )))
