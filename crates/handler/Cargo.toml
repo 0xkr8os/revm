@@ -27,7 +27,7 @@ context.workspace = true
 primitives.workspace = true
 state.workspace = true
 bytecode.workspace = true
-
+tracing.workspace = true
 auto_impl.workspace = true
 derive-where.workspace = true
 
