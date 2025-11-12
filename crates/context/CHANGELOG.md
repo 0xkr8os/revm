@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [12.0.1](https://github.com/0xkr8os/revm/compare/revm-context-v12.0.0...revm-context-v12.0.1) - 2025-11-12
+
+### Other
+
+- updated the following local packages: revm-context-interface
+
 ## [12.0.0](https://github.com/bluealloy/revm/compare/revm-context-v11.0.2...revm-context-v12.0.0) - 2025-11-10
 
 ### Added
