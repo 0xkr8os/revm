@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [13.1.0](https://github.com/0xkr8os/revm/compare/revm-context-interface-v13.0.0...revm-context-interface-v13.1.0) - 2025-11-12
+
+### Added
+
+- *(context)* add mark_cold method to JournaledAccount ([#3160](https://github.com/0xkr8os/revm/pull/3160))
+
 ## [13.0.0](https://github.com/bluealloy/revm/compare/revm-context-interface-v12.0.1...revm-context-interface-v13.0.0) - 2025-11-10
 
 ### Added
