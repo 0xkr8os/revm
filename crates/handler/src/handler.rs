@@ -191,6 +191,9 @@ pub trait Handler {
         evm: &mut Self::Evm,
         init_and_floor_gas: &InitialAndFloorGas,
     ) -> Result<FrameResult, Self::Error> {
+        println!("execution");
+        println!("evm.ctx().tx().gas_limit(): {}", evm.ctx().tx().gas_limit());
+        println!("init_and_floor_gas.initial_gas: {}", init_and_floor_gas.initial_gas);
         let gas_limit = evm.ctx().tx().gas_limit() - init_and_floor_gas.initial_gas;
         // Create first frame action
         let first_frame_input = self.first_frame_input(evm, gas_limit)?;
