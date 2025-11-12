@@ -3683,6 +3683,7 @@ dependencies = [
  "revm-state",
  "serde",
  "serde_json",
+ "tracing",
 ]
 
 [[package]]

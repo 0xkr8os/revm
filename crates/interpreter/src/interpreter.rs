@@ -24,6 +24,7 @@ use crate::{
 };
 use bytecode::Bytecode;
 use primitives::{hardfork::SpecId, Bytes};
+use tracing::info;
 
 /// Main interpreter structure that contains all components defined in [`InterpreterTypes`].
 #[derive(Debug, Clone)]
@@ -293,8 +294,11 @@ impl<IW: InterpreterTypes> Interpreter<IW> {
         self.bytecode.relative_jump(1);
 
         let instruction = unsafe { instruction_table.get_unchecked(opcode as usize) };
+        tracing::info!("instruction: {:?}", instruction.static_gas());
+
 
         if self.gas.record_cost_unsafe(instruction.static_gas()) {
+          tracing::info!("remaining gas: {:?}", self.gas.remaining());
             return self.halt_oog();
         }
         let context = InstructionContext {
