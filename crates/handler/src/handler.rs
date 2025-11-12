@@ -14,6 +14,7 @@ use interpreter::interpreter_action::FrameInit;
 use interpreter::{Gas, InitialAndFloorGas, SharedMemory};
 use primitives::U256;
 use state::Bytecode;
+use tracing::info;
 
 /// Trait for errors that can occur during EVM execution.
 ///
@@ -195,6 +196,7 @@ pub trait Handler {
         tracing::info!("evm.ctx().tx().gas_limit(): {}", evm.ctx().tx().gas_limit());
         tracing::info!("init_and_floor_gas.initial_gas: {}", init_and_floor_gas.initial_gas);
         let gas_limit = evm.ctx().tx().gas_limit() - init_and_floor_gas.initial_gas;
+        tracing::info!("effective gas limit: {}", gas_limit);
         // Create first frame action
         let first_frame_input = self.first_frame_input(evm, gas_limit)?;
 
@@ -381,10 +383,12 @@ pub trait Handler {
         loop {
             let call_or_result = evm.frame_run()?;
 
+
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
                     match evm.frame_init(init)? {
                         ItemOrResult::Item(_) => {
+
                             continue;
                         }
                         // Do not pop the frame since no new frame was created
@@ -394,7 +398,10 @@ pub trait Handler {
                 ItemOrResult::Result(result) => result,
             };
 
+            tracing::info!("inner frame result: {:?}", result);
+
             if let Some(result) = evm.frame_return_result(result)? {
+                tracing::info!("frame_return_result result: {:?}", result);
                 return Ok(result);
             }
         }
