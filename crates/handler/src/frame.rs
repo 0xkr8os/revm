@@ -28,6 +28,7 @@ use primitives::{
 use primitives::{keccak256, Address, Bytes, U256};
 use state::Bytecode;
 use std::{borrow::ToOwned, boxed::Box, vec::Vec};
+use tracing::info;
 
 /// Frame implementation for Ethereum.
 #[derive_where(Clone, Debug; IW,
@@ -146,6 +147,7 @@ impl EthFrame<EthInterpreter> {
         inputs: Box<CallInputs>,
     ) -> Result<ItemOrResult<FrameToken, FrameResult>, ERROR> {
         let gas = Gas::new(inputs.gas_limit);
+        info!("make_call_frame gas: {:?}", gas);
         let return_result = |instruction_result: InstructionResult| {
             Ok(ItemOrResult::Result(FrameResult::Call(CallOutcome {
                 result: InterpreterResult {
