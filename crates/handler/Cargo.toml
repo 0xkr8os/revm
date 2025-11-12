@@ -27,7 +27,7 @@ context.workspace = true
 primitives.workspace = true
 state.workspace = true
 bytecode.workspace = true
-tracing.workspace = true
+tracing = {version = "0.1.39"}
 auto_impl.workspace = true
 derive-where.workspace = true
 
