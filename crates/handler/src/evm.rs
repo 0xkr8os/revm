@@ -202,6 +202,9 @@ where
         let context = &mut self.ctx;
         let instructions = &mut self.instruction;
 
+        tracing::info!("frame_run before: {}", frame.interpreter.gas.remaining());
+
+
         let action = frame
             .interpreter
             .run_plain(instructions.instruction_table(), context);

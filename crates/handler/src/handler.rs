@@ -383,7 +383,6 @@ pub trait Handler {
         loop {
             let call_or_result = evm.frame_run()?;
 
-
             let result = match call_or_result {
                 ItemOrResult::Item(init) => {
                     match evm.frame_init(init)? {
@@ -398,10 +397,8 @@ pub trait Handler {
                 ItemOrResult::Result(result) => result,
             };
 
-            tracing::info!("inner frame result: {:?}", result);
 
             if let Some(result) = evm.frame_return_result(result)? {
-                tracing::info!("frame_return_result result: {:?}", result);
                 return Ok(result);
             }
         }

@@ -294,11 +294,10 @@ impl<IW: InterpreterTypes> Interpreter<IW> {
         self.bytecode.relative_jump(1);
 
         let instruction = unsafe { instruction_table.get_unchecked(opcode as usize) };
-        tracing::info!("instruction: {:?}", instruction.static_gas());
 
-
+        info!("remaining gas: {:?}", self.gas.remaining());
         if self.gas.record_cost_unsafe(instruction.static_gas()) {
-          tracing::info!("remaining gas: {:?}", self.gas.remaining());
+          
             return self.halt_oog();
         }
         let context = InstructionContext {
