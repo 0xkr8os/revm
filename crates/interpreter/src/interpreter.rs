@@ -226,6 +226,7 @@ impl<IW: InterpreterTypes> Interpreter<IW> {
     #[cold]
     #[inline(never)]
     pub fn halt_oog(&mut self) {
+        info!("halt_oog remaining gas: {:?}", self.gas.remaining());
         self.gas.spend_all();
         self.halt(InstructionResult::OutOfGas);
     }
@@ -295,7 +296,6 @@ impl<IW: InterpreterTypes> Interpreter<IW> {
 
         let instruction = unsafe { instruction_table.get_unchecked(opcode as usize) };
 
-        info!("remaining gas: {:?}", self.gas.remaining());
         if self.gas.record_cost_unsafe(instruction.static_gas()) {
           
             return self.halt_oog();
